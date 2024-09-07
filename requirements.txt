@@ -1,0 +1,14 @@
+Flask
+flask-cors
+# Flask-SQLAlchemy
+# Flask-Migrate
+Flask-RESTx
+python-dotenv
+
+httpx
+
+# reddit api
+asyncpraw
+
+# X_search
+redis[hiredis]
