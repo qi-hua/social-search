@@ -1,0 +1,49 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Search API",
+        "version": "1.0",
+        "description": "Search API"
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:5000"
+      }
+    ],
+    "paths": {
+        "/api/search": {
+          "get": {
+            "responses": {
+              "200": {
+                "description": "Success"
+              }
+            },
+            "summary": "query能够是列表或者字符串",
+            "description": "search data from social network\nquery:[\"query1\",\"query2\",\"query3\"]\nquery:query1",
+            "operationId": "get_search",
+            "parameters": [
+              {
+                "name": "query",
+                "in": "query",
+                "type": "string",
+                "required": true,
+                "description": "query is JSON encoded list or string"
+              },
+              {
+                "name": "justtext",
+                "in": "query",
+                "type": "string",
+                "description": "justtext is optional, controls whether to return text or not",
+                "default": true
+              }
+            ],
+            "tags": [
+              "api"
+            ]
+          }
+        }
+      },
+    "components": {
+      "schemas": {}
+    }
+  }

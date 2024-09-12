@@ -15,18 +15,28 @@ class BaseSearchEngine:
         self.timeout = timeout
         self.source = source
 
+    # TODO: 增加初始化测试，判断engine是否有效
+
     @abstractmethod
     async def search(self, query: str, limit: int = 10, timeout: int = 5, **kwargs) -> list:
         pass
 
+    # 备选方案，当默认搜索失败时，使用备选方案
+    async def search_alternative(self, query: str, limit: int = 10, timeout: int = 5, **kwargs) -> list:
+        return []
+
     async def _search(self, query: str, limit: int = 10, timeout: int = 5, **kwargs) -> list:
         try:
-            result = await self.search(query, limit, timeout, **kwargs)
-            return result
+            return await asyncio.wait_for(self.search(query, limit, timeout, **kwargs), timeout=timeout)
         except Exception as e:
-            print(e)
-            raise e
-            return []
+            # print(e)
+            # raise e
+            try:
+                return await asyncio.wait_for(self.search_alternative(query, limit, timeout, **kwargs), timeout=timeout)
+            except Exception as e:
+                # print(e)
+                # raise e
+                return []
 
 class SearchEngineManager:
     _loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
@@ -46,13 +56,19 @@ class SearchEngineManager:
             # DDGS(self.headers, self.proxy, self.timeout),
         ]
     
-    async def _search(self, query: str, limit: int = 10, timeout: int = 5,  engines: List[BaseSearchEngine] = None, **kwargs) -> list:
+    async def _search(self, query: Union[str,List[str]], limit: int = 10, timeout: int = 5,  engines: List[BaseSearchEngine] = None, **kwargs) -> list:
+        if isinstance(query, str):
+            queries = [query]
+        elif isinstance(query, list):
+            queries = query
+        else:
+            raise TypeError("query must be str or list")
         if not engines:
             engines = self.engines
         results = []
         tasks = []
         async with asyncio.TaskGroup() as tg:
-            tasks = [tg.create_task(engine._search(query, limit, timeout, **kwargs)) for engine in engines]
+            tasks = [tg.create_task(engine._search(query, limit, timeout, **kwargs)) for query in queries for engine in engines]
         for task in tasks:
             results_ = task.result()
             results.extend(results_)

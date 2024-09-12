@@ -11,7 +11,9 @@ class TestSearch(BaseSearchEngine):
         return [{
             'link': f'{X_HOST}/{query}',
             'title': f'{query}',
+            'createdAt': '2023-01-01',
             'description': f'{query}',
+            'content': f'test--{query}',
             'source': 'test'
         }]
 

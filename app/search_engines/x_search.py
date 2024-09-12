@@ -1,8 +1,8 @@
+import os
 import json
 import asyncio
 import threading
-from types import TracebackType
-from typing import Any, Awaitable, Dict, Optional, Type, Union
+from datetime import datetime
 
 import httpx
 
@@ -10,34 +10,7 @@ from app.utils.headers_manager import QueueHeaders
 from app.search_engines.base import BaseSearchEngine
 
 
-SOCIALDATA_API_KEY = "700|7a7HcoFSorMVKNbN1ltdFMu7HMex32jBUHeYxSG8fb909e0f"
-
-def transform_tweets(tweets):
-    return [
-        {
-            "id": tweet["id_str"],
-            "link": f"{X_HOST}/{tweet['user'].get('screen_name', '')}/status/{tweet['id_str']}",
-            "title": f"{tweet['user'].get('name', '')} on X",
-            "host": X_HOST,
-            "content": "RT:" if tweet.get("retweeted_status") else "" + tweet.get("full_text", tweet.get("text", "")),
-            "createdAt": tweet["tweet_created_at"],
-            "author": tweet["user"].get("name", ""),
-            "author_avatar":tweet["user"].get("profile_image_url_https", ""),
-            
-            "source": "X",
-            # "isRetweet": True if tweet.get("retweeted_status") else False,
-            # "author": {"userName": tweet["user"].get("screen_name", ""), "profile_image_url_https":tweet["user"].get("profile_image_url_https", "")},
-            # "text": tweet.get("full_text", tweet.get("text", "")),
-
-            # "retweetCount": tweet["retweet_count"],
-            # "replyCount": tweet["reply_count"],
-            # "likeCount": tweet["favorite_count"],
-            # "quoteCount": tweet["quote_count"],
-            # "viewCount": tweet.get("views_count", 0)
-        }
-        for tweet in tweets
-    ]
-
+SOCIALDATA_API_KEY = os.getenv('SOCIALDATA_API_KEY')
 
 X_HOST = 'https://x.com'
 
@@ -83,6 +56,42 @@ class XSearch(BaseSearchEngine):
         # results = await get_results()
         # return results
 
+    def format_tweet(id,tweet):
+        is_retweet = 'RT ' if tweet.get('isRetweet', False) else ''
+        author = tweet.get('author', {}).get('userName', 'username')
+        created_at = tweet.get('createdAt', '')
+        created_at = datetime.fromisoformat(created_at.replace("Z", "+00:00")).strftime('%Y-%m-%d %H:%M:%S')
+        
+        text = tweet.get('text', '')  # Ensure text is not undefined
+        formatted_text = '\n> '.join(text.split('\n'))
+        
+        # return f"""**{id}:{is_retweet}@{author} - {created_at}**\n\n> {formatted_text}\n\n*retweets: {tweet.get('retweetCount', 0)}, replies: {tweet.get('replyCount', 0)}, likes: {tweet.get('likeCount', 0)}, quotes: {tweet.get('quoteCount', 0)}, views: {tweet.get('viewCount', 0)}*\n"""
+        return f"""**{id}:{is_retweet}@{author} - {created_at}**\n\n> {formatted_text}\n"""
+    
+    def transform_data(self, tweet):
+        return {
+            "id": tweet["id_str"],
+            "link": f"{X_HOST}/{tweet['user'].get('screen_name', '')}/status/{tweet['id_str']}",
+            "title": f"{tweet['user'].get('name', '')} on X",
+            "host": X_HOST,
+            "content": "RT:" if tweet.get("retweeted_status") else "" + tweet.get("full_text", tweet.get("text", ""))[:200],
+            # "createdAt": tweet["tweet_created_at"],
+            "createdAt": datetime.fromisoformat(tweet["tweet_created_at"].replace("Z", "+00:00")).strftime('%Y-%m-%d %H:%M:%S'),
+            "author": tweet["user"].get("name", ""),
+            "author_avatar":tweet["user"].get("profile_image_url_https", ""),
+            
+            "source": "X",
+            # "isRetweet": True if tweet.get("retweeted_status") else False,
+            # "author": {"userName": tweet["user"].get("screen_name", ""), "profile_image_url_https":tweet["user"].get("profile_image_url_https", "")},
+            # "text": tweet.get("full_text", tweet.get("text", "")),
+
+            # "retweetCount": tweet["retweet_count"],
+            # "replyCount": tweet["reply_count"],
+            # "likeCount": tweet["favorite_count"],
+            # "quoteCount": tweet["quote_count"],
+            # "viewCount": tweet.get("views_count", 0)
+        }
+
     async def search(self, query: str, limit:int = 10, timeout:int=5, **kwargs) -> list:
         url = 'https://api.socialdata.tools/twitter/search'
         params = {
@@ -97,7 +106,7 @@ class XSearch(BaseSearchEngine):
             res = await client.get(url, params=params, headers=headers)
         status_code = res.status_code
         if status_code == 200:
-            tweets = transform_tweets(res.json()['tweets'])
+            tweets = [self.transform_data(tweet) for tweet in res.json()['tweets'][:limit]]
             return tweets
         else:
             print(res.__dict__)

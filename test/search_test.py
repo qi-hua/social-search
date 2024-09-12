@@ -1,5 +1,3 @@
-import asyncio
-
 from app.search_engines import SearchEngineManager
 from app.search_engines import XSearch
 

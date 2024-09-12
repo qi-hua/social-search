@@ -1,0 +1,822 @@
+app:
+  description: AI 搜索
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Search social data
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1724506081560-source-1725121580953-target
+      selected: false
+      source: '1724506081560'
+      sourceHandle: source
+      target: '1725121580953'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: 1725121580953-source-1725205362682-target
+      selected: false
+      source: '1725121580953'
+      sourceHandle: source
+      target: '1725205362682'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: end
+      id: 1725210148298-source-1725205407812-target
+      selected: false
+      source: '1725210148298'
+      sourceHandle: source
+      target: '1725205407812'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: end
+      id: 1725205362682-false-1725114488125-target
+      selected: false
+      source: '1725205362682'
+      sourceHandle: 'false'
+      target: '1725114488125'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1725934391782-source-17259384314330-target
+      selected: false
+      source: '1725934391782'
+      sourceHandle: source
+      target: '17259384314330'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: tool
+      id: 17259384314330-source-1725934371274-target
+      selected: false
+      source: '17259384314330'
+      sourceHandle: source
+      target: '1725934371274'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 17259386057360-source-1725943291616-target
+      selected: false
+      source: '17259386057360'
+      sourceHandle: source
+      target: '1725943291616'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: if-else
+      id: 1725934371274-source-1725944223641-target
+      selected: false
+      source: '1725934371274'
+      sourceHandle: source
+      target: '1725944223641'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1725944223641-false-17259386057360-target
+      selected: false
+      source: '1725944223641'
+      sourceHandle: 'false'
+      target: '17259386057360'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1725944223641-true-1724506081560-target
+      selected: false
+      source: '1725944223641'
+      sourceHandle: 'true'
+      target: '1724506081560'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1725205362682-true-1725210148298-target
+      selected: false
+      source: '1725205362682'
+      sourceHandle: 'true'
+      target: '1725210148298'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1724464859046-source-1725934391782-target
+      selected: false
+      source: '1724464859046'
+      sourceHandle: source
+      target: '1725934391782'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: query
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: query
+        - label: isApi
+          max_length: 48
+          options:
+          - 'false'
+          - 'true'
+          required: false
+          type: select
+          variable: isApi
+        - label: advanced
+          max_length: 48
+          options:
+          - 'false'
+          - 'true'
+          required: false
+          type: select
+          variable: advanced
+      height: 141
+      id: '1724464859046'
+      position:
+        x: 51.97426921729112
+        y: 770.5
+      positionAbsolute:
+        x: 51.97426921729112
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: glm-4
+          provider: zhipuai
+        prompt_config:
+          jinja2_variables:
+          - value_selector:
+            - '1725089624801'
+            - result
+            variable: result
+        prompt_template:
+        - edition_type: basic
+          id: 6317a0d5-2910-4a3a-8e5c-3dce1b9f3943
+          jinja2_text: '请从以下多篇tweet中总结和分析内容。如果tweet中有谈论相关的股票或期权，请同时判断每条tweet表达的情绪（看跌、看涨、中性）。
+
+            要求：
+
+            总结所有的tweet讲的主要内容。
+
+            判断每条tweet是否谈论了股票或期权。
+
+            如果谈论了股票或期权，请判断该tweet表达的情绪（看跌、看涨、中性）。'
+          role: system
+          text: "你是一个有帮助的AI助手，具有丰富的股票交易经验。你的任务判断参考信息的情绪，以及总结分析。请遵循以下步骤：\n\n1. 判断情绪：对于每条参考信息，你需要判断其表达的情绪（看涨、中性、看跌）。\n\
+            2. 总结和分析：你应当根据提供的参考信息，全面、深入地总结和分析。确保包括所有相关的关键信息，并确保你的总结能够回答用户的问题。\n\n\
+            要求：\n1. sentiments数组长度与输入的参考信息数量一致。\n2. sumary以markdown格式输出。\n2. sumary的内容需要逻辑清晰，层次分明，确保读者易于理解。并且能够直接解决用户的问题。\n\
+            3. sumary中每个关键点需标注引用的搜索结果来源(保持跟问答对中的索引一致)，以确保信息的可信度。给出索引的形式为`[[int]]`，如果有多个索引，则用多个[[]]表示，如`[[id_1]][[id_2]]`。\n\
+            4. 直接输出json字符串，不要输出任何多余信息。\n输出格式如下：\n{\n  \"sentiments\": {\n    # id:\
+            \ sentiment,\n    \"1\": \"看涨\" | \"中性\" | \"看跌\",\n    \"2\": \"看涨\"\
+            \ | \"中性\" | \"看跌\",\n    ...\n  },\n  \"sumary\": \"sumary\"\n}"
+        - id: ab067517-91cd-472a-a922-4a36a53b750b
+          role: user
+          text: '用户问题：{{#1724464859046.query#}}
+
+            参考信息：
+
+            {{#1725934371274.text#}}'
+        selected: false
+        title: LLM推理分析
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 97
+      id: '1724506081560'
+      position:
+        x: 1572.894873327008
+        y: 770.5
+      positionAbsolute:
+        x: 1572.894873327008
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '17259384314330'
+          - stock_related
+          variable: isStock
+        - value_selector:
+          - '1725934371274'
+          - text
+          variable: text
+        - value_selector:
+          - '1725121580953'
+          - sentiments
+          variable: sentiments
+        - value_selector:
+          - '1725121580953'
+          - sentimentCounts
+          variable: sentimentCounts
+        - value_selector:
+          - '1725121580953'
+          - sumary
+          variable: sumary
+        - value_selector:
+          - '1725121580953'
+          - exception
+          variable: exception
+        selected: false
+        title: 结束
+        type: end
+      height: 219
+      id: '1725114488125'
+      position:
+        x: 2633.7338227786745
+        y: 996.2412014707193
+      positionAbsolute:
+        x: 2633.7338227786745
+        y: 996.2412014707193
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "import json\nimport re\nfrom typing import Any, Callable, List\n\n\
+          def _replace_new_line(match: re.Match[str]) -> str:\n    value = match.group(2)\n\
+          \    value = re.sub(r\"\\n\", r\"\\\\n\", value)\n    value = re.sub(r\"\
+          \\r\", r\"\\\\r\", value)\n    value = re.sub(r\"\\t\", r\"\\\\t\", value)\n\
+          \    value = re.sub(r'(?<!\\\\)\"', r\"\\\"\", value)\n    return match.group(1)\
+          \ + value + match.group(3)\n\ndef _custom_parser(multiline_string: str)\
+          \ -> str:\n    if isinstance(multiline_string, (bytes, bytearray)):\n  \
+          \      multiline_string = multiline_string.decode()\n    multiline_string\
+          \ = re.sub(\n        r'(\"action_input\"\\:\\s*\")(.*?)(\")',\n        _replace_new_line,\n\
+          \        multiline_string,\n        flags=re.DOTALL,\n    )\n    return\
+          \ multiline_string\n\ndef parse_partial_json(s: str, *, strict: bool = False)\
+          \ -> Any:\n    try:\n        return json.loads(s, strict=strict)\n    except\
+          \ json.JSONDecodeError:\n        pass\n    new_s = \"\"\n    stack = []\n\
+          \    is_inside_string = False\n    escaped = False\n    for char in s:\n\
+          \        if is_inside_string:\n            if char == '\"' and not escaped:\n\
+          \                is_inside_string = False\n            elif char == \"\\\
+          n\" and not escaped:\n                char = \"\\\\n\"  # Replace the newline\
+          \ character with the escape sequence.\n            elif char == \"\\\\\"\
+          :\n                escaped = not escaped\n            else:\n          \
+          \      escaped = False\n        else:\n            if char == '\"':\n  \
+          \              is_inside_string = True\n                escaped = False\n\
+          \            elif char == \"{\":\n                stack.append(\"}\")\n\
+          \            elif char == \"[\":\n                stack.append(\"]\")\n\
+          \            elif char == \"}\" or char == \"]\":\n                if stack\
+          \ and stack[-1] == char:\n                    stack.pop()\n            \
+          \    else:\n                    return None\n        new_s += char\n   \
+          \ if is_inside_string:\n        new_s += '\"'\n    while new_s:\n      \
+          \  final_s = new_s\n        for closing_char in reversed(stack):\n     \
+          \       final_s += closing_char\n        try:\n            return json.loads(final_s,\
+          \ strict=strict)\n        except json.JSONDecodeError:\n            new_s\
+          \ = new_s[:-1]\n    return json.loads(s, strict=strict)\n\ndef parse_json_markdown(\n\
+          \    json_string: str, *, parser: Callable[[str], Any] = parse_partial_json\n\
+          ) -> dict:\n    try:\n        return _parse_json(json_string, parser=parser)\n\
+          \    except json.JSONDecodeError:\n        match = re.search(r\"```(json)?(.*)\"\
+          , json_string, re.DOTALL)\n        if match is None:\n            json_str\
+          \ = json_string\n        else:\n            json_str = match.group(2)\n\
+          \    return _parse_json(json_str, parser=parser)\n\ndef _parse_json(\n \
+          \   json_str: str, *, parser: Callable[[str], Any] = parse_partial_json\n\
+          ) -> dict:\n    json_str = json_str.strip().strip(\"`\")\n    json_str =\
+          \ _custom_parser(json_str)\n    return parser(json_str)\n\n\n\nitemStyle\
+          \ = {\n    \"看涨\": {\"color\": \"#00FF00\"},   # 绿色\n    \"中性\": {\"color\"\
+          : \"#0000FF\"},   # 蓝色\n    \"看跌\": {\"color\": \"#FF0000\"}    # 红色\n}\n\
+          \ndef generate_echarts(data: dict):\n    # 转换为ECharts格式\n    echarts_data\
+          \ = [\n        {\"name\": key, \"value\": value, \"itemStyle\": itemStyle[key]}\n\
+          \        for key, value in data.items()\n    ]\n    # 生成ECharts配置\n    echarts_config\
+          \ = {\n        \"tooltip\": {\n            \"trigger\": \"item\"\n     \
+          \   },\n        \"legend\": {\n            \"top\": \"5%\",\n          \
+          \  \"left\": \"center\"\n        },\n        \"series\": [\n           \
+          \ {\n                \"name\": \"Sentiment\",\n                \"type\"\
+          : \"pie\",\n                \"radius\": [\"40%\", \"70%\"],\n          \
+          \      \"avoidLabelOverlap\": False,\n                \"itemStyle\": {\n\
+          \                    \"borderRadius\": 10,\n                    \"borderColor\"\
+          : \"#fff\",\n                    \"borderWidth\": 2\n                },\n\
+          \                \"label\": {\n                    \"show\": True,\n   \
+          \                 \"position\": \"outside\",\n                    \"formatter\"\
+          : \"{b}: {c}\",\n                    \"fontSize\": \"20\",\n           \
+          \         \"fontWeight\": \"bold\",\n                    \"alignTo\": \"\
+          labelLine\",\n                    \"bleedMargin\": 5\n                },\n\
+          \                \"emphasis\": {\n                    \"label\": {\n   \
+          \                     \"show\": False,\n                        \"fontSize\"\
+          : \"40\",\n                        \"fontWeight\": \"bold\"\n          \
+          \          }\n                },\n                \"labelLine\": {\n   \
+          \                 \"show\": True,\n                    \"length\": 20,\n\
+          \                    \"length2\": 20,\n                    \"smooth\": True\n\
+          \                },\n                \"data\": echarts_data\n          \
+          \  }\n        ]\n    }\n\n    # 输出为JSON格式\n    echarts_json = json.dumps(echarts_config,\
+          \ ensure_ascii=False, indent=None)\n    echarts_md = f\"```echarts\\n{echarts_json}\\\
+          n```\"\n    return echarts_md\n\ndef generate_tradingview(symbols: list):\n\
+          \    return  \"```tradingview\\n\" + json.dumps({\"symbols\":[symbol + \"\
+          |1D\" for symbol in symbols]},ensure_ascii=False) + \"\\n```\"\n\ndef main(stock_code:str,\
+          \ json_str: str) -> dict:\n    result = {\n        \"sentiments\": {},\n\
+          \        ## 初始化数据顺序\n        \"sentimentCounts\": {\n            \"看涨\"\
+          :0,\n            \"中性\":0,\n            \"看跌\":0\n        },\n        \"\
+          sumary\": \"\",\n        \"echartData\": \"\",\n        \"tradingviewData\"\
+          : \"\",\n        \"exception\": \"\"\n    }\n    try:\n        json_str\
+          \ = json_str.strip()\n        data:dict = parse_json_markdown(json_str)\n\
+          \        result['sentiments'] = data['sentiments']\n        # 统计sentiments中的各种情感数量\n\
+          \        for sentiment in result['sentiments'].values():\n            result['sentimentCounts'][sentiment]\
+          \ = result['sentimentCounts'].get(sentiment, 0) + 1\n        result['sumary']\
+          \ = data['sumary']\n        # 删除value=0的键\n        result['sentimentCounts']\
+          \ = {k: v for k, v in result['sentimentCounts'].items() if v != 0}\n   \
+          \     if len(result['sentimentCounts']) > 0:\n            result['echartData']\
+          \ = generate_echarts(result['sentimentCounts'])\n        result['tradingviewData']\
+          \ = generate_tradingview([stock_code])\n    except Exception as e:\n   \
+          \     result['exception'] = str(e)\n        # raise e\n    return result"
+        code_language: python3
+        desc: ''
+        outputs:
+          echartData:
+            children: null
+            type: string
+          exception:
+            children: null
+            type: string
+          sentimentCounts:
+            children: null
+            type: object
+          sentiments:
+            children: null
+            type: object
+          sumary:
+            children: null
+            type: string
+          tradingviewData:
+            children: null
+            type: string
+        selected: false
+        title: 格式化数据
+        type: code
+        variables:
+        - value_selector:
+          - '17259384314330'
+          - stock_code
+          variable: stock_code
+        - value_selector:
+          - '1724506081560'
+          - text
+          variable: json_str
+      height: 53
+      id: '1725121580953'
+      position:
+        x: 1875.894873327008
+        y: 770.5
+      positionAbsolute:
+        x: 1875.894873327008
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is not
+            id: 5f600605-fb22-44bb-9430-a90ce27bf622
+            value: 'true'
+            varType: string
+            variable_selector:
+            - '1724464859046'
+            - isApi
+          id: 'true'
+          logical_operator: and
+        desc: 是否是API调用
+        selected: false
+        title: 是否是API调用
+        type: if-else
+      height: 153
+      id: '1725205362682'
+      position:
+        x: 2233.9741143896554
+        y: 770.5
+      positionAbsolute:
+        x: 2233.9741143896554
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1725210148298'
+          - output
+          variable: output
+        selected: false
+        title: 结束 3
+        type: end
+      height: 89
+      id: '1725205407812'
+      position:
+        x: 3045.01499074958
+        y: 770.5
+      positionAbsolute:
+        x: 3045.01499074958
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        selected: false
+        template: '{{ sumary }}
+
+          {{ echartData }}
+
+          {{ tradingviewData }}'
+        title: 格式化
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1725121580953'
+          - sumary
+          variable: sumary
+        - value_selector:
+          - '1725121580953'
+          - echartData
+          variable: echartData
+        - value_selector:
+          - '1725121580953'
+          - tradingviewData
+          variable: tradingviewData
+      height: 53
+      id: '1725210148298'
+      position:
+        x: 2633.7338227786745
+        y: 770.5
+      positionAbsolute:
+        x: 2633.7338227786745
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: 获取相关信息
+        provider_id: 79f098f0-90a9-48ec-bc14-b33e4c4a2a98
+        provider_name: social_search
+        provider_type: api
+        selected: false
+        title: get_search_data
+        tool_configurations: {}
+        tool_label: get_search
+        tool_name: get_search
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#17259384314330.sub_queries_str#}}'
+        type: tool
+      height: 81
+      id: '1725934371274'
+      position:
+        x: 939
+        y: 770.5
+      positionAbsolute:
+        x: 939
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 分解问题
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: glm-4
+          provider: zhipuai
+        prompt_template:
+        - id: dda88dd0-8c9b-4f9c-afee-8210b5282139
+          role: system
+          text: "你是一个专业的搜索专家，你的任务是分解用户问题。\n\n任务：将用户问题分解成子查询，以利于后续信息搜索。识别用户问题是否与某个具体的股票相关。如果是，则提供该股票的代码。输出应采用JSON格式。\n\
+            \n指导：\n1. 确定用户使用的语言。\n2. 将用户问题根据难易程度分解为1-4个子查询。\n  - 如果用户问题的语言不是en，至少需要包含一个en版的子查询。\n\
+            \  - 至少需要包含一个用户使用的语言版的子查询，以方便搜索相关信息。 \n3. 确定用户问题是否涉及某一具体的股票。\n  - 如果是，则确认并提供该股票的代码。\n\
+            4. 不要输出任何多余的信息。\n5. 输出结果必须是JSON格式。\n\n输出格式：\n{\"language\": \"zh\"|\"\
+            en\"|..., \"sub_queries\": [\"具体子查1\",\"query2\"], \"stock_related\":\
+            \ \"是\"|\"否\", \"stock_code\": \"股票代码\"}"
+        - id: 7b7d46ac-71b7-4051-962a-7420bca5766f
+          role: user
+          text: 用户问题：{{#1724464859046.query#}}
+        selected: false
+        title: 分解问题
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 125
+      id: '1725934391782'
+      position:
+        x: 353.66613937690954
+        y: 770.5
+      positionAbsolute:
+        x: 353.66613937690954
+        y: 770.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        code: "import json\nimport re\nfrom typing import Any, Callable, List\n\n\
+          def _replace_new_line(match: re.Match[str]) -> str:\n    value = match.group(2)\n\
+          \    value = re.sub(r\"\\n\", r\"\\\\n\", value)\n    value = re.sub(r\"\
+          \\r\", r\"\\\\r\", value)\n    value = re.sub(r\"\\t\", r\"\\\\t\", value)\n\
+          \    value = re.sub(r'(?<!\\\\)\"', r\"\\\"\", value)\n    return match.group(1)\
+          \ + value + match.group(3)\n\ndef _custom_parser(multiline_string: str)\
+          \ -> str:\n    if isinstance(multiline_string, (bytes, bytearray)):\n  \
+          \      multiline_string = multiline_string.decode()\n    multiline_string\
+          \ = re.sub(\n        r'(\"action_input\"\\:\\s*\")(.*?)(\")',\n        _replace_new_line,\n\
+          \        multiline_string,\n        flags=re.DOTALL,\n    )\n    return\
+          \ multiline_string\n\ndef parse_partial_json(s: str, *, strict: bool = False)\
+          \ -> Any:\n    try:\n        return json.loads(s, strict=strict)\n    except\
+          \ json.JSONDecodeError:\n        pass\n    new_s = \"\"\n    stack = []\n\
+          \    is_inside_string = False\n    escaped = False\n    for char in s:\n\
+          \        if is_inside_string:\n            if char == '\"' and not escaped:\n\
+          \                is_inside_string = False\n            elif char == \"\\\
+          n\" and not escaped:\n                char = \"\\\\n\"  # Replace the newline\
+          \ character with the escape sequence.\n            elif char == \"\\\\\"\
+          :\n                escaped = not escaped\n            else:\n          \
+          \      escaped = False\n        else:\n            if char == '\"':\n  \
+          \              is_inside_string = True\n                escaped = False\n\
+          \            elif char == \"{\":\n                stack.append(\"}\")\n\
+          \            elif char == \"[\":\n                stack.append(\"]\")\n\
+          \            elif char == \"}\" or char == \"]\":\n                if stack\
+          \ and stack[-1] == char:\n                    stack.pop()\n            \
+          \    else:\n                    return None\n        new_s += char\n   \
+          \ if is_inside_string:\n        new_s += '\"'\n    while new_s:\n      \
+          \  final_s = new_s\n        for closing_char in reversed(stack):\n     \
+          \       final_s += closing_char\n        try:\n            return json.loads(final_s,\
+          \ strict=strict)\n        except json.JSONDecodeError:\n            new_s\
+          \ = new_s[:-1]\n    return json.loads(s, strict=strict)\n\ndef parse_json_markdown(\n\
+          \    json_string: str, *, parser: Callable[[str], Any] = parse_partial_json\n\
+          ) -> dict:\n    try:\n        return _parse_json(json_string, parser=parser)\n\
+          \    except json.JSONDecodeError:\n        match = re.search(r\"```(json)?(.*)\"\
+          , json_string, re.DOTALL)\n        if match is None:\n            json_str\
+          \ = json_string\n        else:\n            json_str = match.group(2)\n\
+          \    return _parse_json(json_str, parser=parser)\n\ndef _parse_json(\n \
+          \   json_str: str, *, parser: Callable[[str], Any] = parse_partial_json\n\
+          ) -> dict:\n    json_str = json_str.strip().strip(\"`\")\n    json_str =\
+          \ _custom_parser(json_str)\n    return parser(json_str)\n\n\n\n\ndef main(query:\
+          \ str,json_str: str) -> dict:\n    try:\n        json_str = json_str.strip()\n\
+          \        data:dict = parse_json_markdown(json_str)\n        data['sub_queries_str']\
+          \ = json.dumps(data['sub_queries'], ensure_ascii=False)\n        return\
+          \ data\n    except Exception as e:\n        return {\n            \"language\"\
+          : \"\",\n            \"sub_queries\": [query],\n            \"sub_queries_str\"\
+          : query,\n            \"stock_related\": \"否\",\n            \"stock_code\"\
+          : \"\"\n        }"
+        code_language: python3
+        desc: ''
+        outputs:
+          language:
+            children: null
+            type: string
+          stock_code:
+            children: null
+            type: string
+          stock_related:
+            children: null
+            type: string
+          sub_queries:
+            children: null
+            type: array[string]
+          sub_queries_str:
+            children: null
+            type: string
+        selected: false
+        title: 解析数据
+        type: code
+        variables:
+        - value_selector:
+          - '1724464859046'
+          - query
+          variable: query
+        - value_selector:
+          - '1725934391782'
+          - text
+          variable: json_str
+      height: 53
+      id: '17259384314330'
+      position:
+        x: 636
+        y: 770.5
+      positionAbsolute:
+        x: 636
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 分解问题
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: glm-4
+          provider: zhipuai
+        prompt_template:
+        - id: dda88dd0-8c9b-4f9c-afee-8210b5282139
+          role: system
+          text: '你是一个有帮助的AI助手，你的任务是根据用户的问题和提供的参考信息，进行详细的搜索和分析，并给出用户最期待的回复。请遵循以下步骤：
+
+
+            1. 总结和分析：你应当根据提供的参考信息，全面、深入地总结和分析。确保包括所有相关的关键信息，并确保你的总结能够回答用户的问题。
+
+            2. 提供清晰的回答：回答内容需要逻辑清晰，层次分明，确保读者易于理解。并且能够直接解决用户的问题。
+
+            3. 回答中每个关键点需标注引用的搜索结果来源(保持跟问答对中的索引一致)，以确保信息的可信度。给出索引的形式为`[[int]]`，如果有多个索引，则用多个[[]]表示，如`[[id_1]][[id_2]]`。'
+        - id: 7b7d46ac-71b7-4051-962a-7420bca5766f
+          role: user
+          text: '用户问题：{{#1724464859046.query#}}
+
+            参考信息：
+
+            {{#1725934371274.text#}}'
+        selected: false
+        title: 分析总结
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 125
+      id: '17259386057360'
+      position:
+        x: 1572.894873327008
+        y: 1118.1708984914599
+      positionAbsolute:
+        x: 1572.894873327008
+        y: 1118.1708984914599
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '17259386057360'
+          - text
+          variable: text
+        selected: false
+        title: 结束 5
+        type: end
+      height: 89
+      id: '1725943291616'
+      position:
+        x: 1875.894873327008
+        y: 1118.1708984914599
+      positionAbsolute:
+        x: 1875.894873327008
+        y: 1118.1708984914599
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 3354ac32-504f-4913-9c3c-95b1466d2881
+            value: 是
+            varType: string
+            variable_selector:
+            - '17259384314330'
+            - stock_related
+          - comparison_operator: not empty
+            id: 3a916f82-b36e-4277-a291-8cce33ef5fcc
+            value: ''
+            varType: string
+            variable_selector:
+            - '1725934371274'
+            - text
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支：是否涉及股票或期权
+        type: if-else
+      height: 151
+      id: '1725944223641'
+      position:
+        x: 1229.1428571428573
+        y: 770.5
+      positionAbsolute:
+        x: 1229.1428571428573
+        y: 770.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 64.83997044606394
+      y: -96.61943533702728
+      zoom: 0.44751253546398584

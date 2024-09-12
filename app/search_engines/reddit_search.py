@@ -1,5 +1,7 @@
+import os
 import asyncio
 import asyncpraw
+from datetime import datetime
 from aiohttp import ClientSession
 
 from app.search_engines.base import BaseSearchEngine
@@ -15,12 +17,9 @@ class RedditSearch(BaseSearchEngine):
                 trust_env=True,
                 loop=_loop
             )},
-            client_id="2TMNCWUHY9PCDhgd-xK87A",
-            client_secret="USzYY0zGzQQG-2ahU_1irj_gBfHKVQ",
-            # redirect_uri="http://localhost:8080",
-            user_agent="testscript by u/qihua147",
-            # username="qihua147",
-            # password="myreddit.com147",
+            client_id=os.getenv("REDDIT_CLIENT_ID"),
+            client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+            user_agent=os.getenv("REDDIT_USERAGENT"),
         )
         super().__init__(**kwargs)
 
@@ -30,8 +29,9 @@ class RedditSearch(BaseSearchEngine):
             'link': f"{REDDIT_HOST}{data.permalink}",
             'title': f"{data.subreddit_name_prefixed}: {data.title}",
             'host': REDDIT_HOST,
-            'content': data.selftext,
-            'createdAt': data.created,
+            # TODO: 长度目前截取200，后续需要优化
+            'content': data.selftext[:200],
+            'createdAt': datetime.fromtimestamp(data.created),
 
             'author': data.author.name,
             # 'author_avatar': None,
